@@ -10,7 +10,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         NavigationStack {
-            PhotoGridView()
+            NavigationLink {
+                PhotoGridView()
+            } label: {
+                Text("所有照片")
+            }
         }
     }
 }

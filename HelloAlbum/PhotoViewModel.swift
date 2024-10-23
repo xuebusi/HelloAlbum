@@ -10,6 +10,7 @@ import Photos
 
 class PhotoViewModel: ObservableObject {
     @Published var photos: [Photo] = []
+    let cachingManager = PHCachingImageManager() // 使用缓存管理器
     
     init() {
         requestAuthorization()
@@ -50,6 +51,32 @@ class PhotoViewModel: ObservableObject {
         
         PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { image, _ in
             completion(image)
+        }
+    }
+    
+    func startCaching(asset: PHAsset, targetSize: CGSize) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.deliveryMode = .opportunistic
+        options.isNetworkAccessAllowed = true
+        cachingManager.startCachingImages(for: [asset], targetSize: targetSize, contentMode: .aspectFit, options: options)
+    }
+    
+    func stopCaching(asset: PHAsset, targetSize: CGSize) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.deliveryMode = .opportunistic
+        options.isNetworkAccessAllowed = true
+        cachingManager.stopCachingImages(for: [asset], targetSize: targetSize, contentMode: .aspectFit, options: options)
+    }
+    
+    func requestImage(asset: PHAsset, targetSize: CGSize, completion: @escaping (UIImage?) -> Void) {
+        let options = PHImageRequestOptions()
+        options.isSynchronous = false
+        options.deliveryMode = .opportunistic
+        options.isNetworkAccessAllowed = true
+        cachingManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { uiImage, _ in
+            completion(uiImage)
         }
     }
 }
