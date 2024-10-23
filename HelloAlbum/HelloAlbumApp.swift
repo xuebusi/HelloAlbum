@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct HelloAlbumApp: App {
+    @StateObject var vm = PhotoViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(vm)
         }
     }
 }

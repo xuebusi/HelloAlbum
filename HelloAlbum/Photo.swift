@@ -12,7 +12,7 @@ struct Photo: Identifiable {
     var id: String { localIdentifier }
     var localIdentifier: String
     var asset: PHAsset
-    var image: UIImage?
+    var uiImage: UIImage?
     
     init(asset: PHAsset) {
         self.asset = asset
